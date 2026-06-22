@@ -515,7 +515,7 @@ function RequestsPage() {
 function RequestForm({ onDone, userId, otBalance, annualRemain, isMonthly }: {
   onDone: () => void; userId: string; otBalance: number; annualRemain: number; isMonthly: boolean;
 }) {
-  const [type, setType] = useState<LeaveTypeKey>("annual");
+  const [type, setType] = useState<LeaveTypeKey>("personal_basic");
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
   const [reason, setReason] = useState("");

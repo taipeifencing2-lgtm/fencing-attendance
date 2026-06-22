@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(wrangler whoami:*)",
+      "Bash(wrangler deploy:*)",
+      "Bash(npm run:*)",
+      "Bash(npx wrangler:*)",
+      "Bash(npx tsc:*)",
+      "Bash(supabase --version)",
+      "Bash(npx supabase:*)"
+    ]
+  }
+}

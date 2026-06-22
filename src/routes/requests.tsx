@@ -600,6 +600,14 @@ function RequestForm({ onDone, userId, otBalance, annualRemain, isMonthly }: {
     }
   };
 
+  const fillFullDay = () => {
+    const d = new Date();
+    const pad = (n: number) => String(n).padStart(2, "0");
+    const date = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+    setStart(`${date}T09:00`);
+    setEnd(`${date}T18:00`);
+  };
+
   const showOffset = isMonthly && type !== "overtime" && otBalance > 0;
   const leaveDays = useMemo(() => {
     if (!start || !end) return null;
@@ -629,6 +637,9 @@ function RequestForm({ onDone, userId, otBalance, annualRemain, isMonthly }: {
         <div><Label>開始</Label><Input type="datetime-local" value={start} onChange={e => setStart(e.target.value)} className="mt-1.5" /></div>
         <div><Label>結束</Label><Input type="datetime-local" value={end} onChange={e => setEnd(e.target.value)} className="mt-1.5" /></div>
       </div>
+      <Button type="button" variant="outline" size="sm" className="w-full" onClick={fillFullDay}>
+        請假一整天（今天 09:00–18:00）
+      </Button>
       {leaveDays !== null && (
         <p className="text-xs text-muted-foreground -mt-2">共 <span className="font-semibold text-foreground">{leaveDays}</span> 天
           {type === "annual" && <span className="ml-1">(剩餘特休 {annualRemain.toFixed(1)} 天)</span>}
@@ -644,7 +655,12 @@ function RequestForm({ onDone, userId, otBalance, annualRemain, isMonthly }: {
       {showOffset && (
         <div>
           <Label>使用加班時數折抵 (可用 {otBalance.toFixed(2)}h)</Label>
-          <Input type="number" min="0" max={otBalance} step="0.5" value={useOt} onChange={e => setUseOt(e.target.value)} className="mt-1.5" />
+          <div className="flex gap-2 mt-1.5">
+            <Input type="number" min="0" max={otBalance} step="0.5" value={useOt} onChange={e => setUseOt(e.target.value)} />
+            <Button type="button" variant="outline" size="sm" className="shrink-0" onClick={() => setUseOt(String(Math.min(8, otBalance)))}>
+              折抵 8 小時
+            </Button>
+          </div>
           <p className="text-xs text-muted-foreground mt-1">核准後將自動從加班時數中扣除</p>
         </div>
       )}
